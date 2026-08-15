@@ -2,7 +2,7 @@
 
 Name:           ws-unapi-relay
 Version:        0.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Restricted WebSocket relay for TCP/IP UNAPI clients
 
 License:        GPL-2.0-only AND MIT
@@ -14,6 +14,8 @@ BuildArch:      noarch
 BuildRequires:  nodejs >= 20
 BuildRequires:  systemd-rpm-macros
 Requires:       nodejs >= 20
+Provides:       1983-msx-unapi-relay = %{version}-%{release}
+Obsoletes:      1983-msx-unapi-relay < %{version}-%{release}
 Provides:       bundled(nodejs-ws) = %{ws_version}
 %{?systemd_requires}
 
@@ -86,6 +88,9 @@ install -m 0600 packaging/systemd/%{name}.sysconfig \
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 
 %changelog
+* Sat Aug 15 2026 Salvatore Bognanni <salvogendut@gmail.com> - 0.1.0-2
+- Preserve upgrade compatibility with the former package name.
+
 * Sat Aug 15 2026 Salvatore Bognanni <salvogendut@gmail.com> - 0.1.0-1
 - Package the standalone DNS, TCP, and UDP UNAPI relay.
 - Add a hardened systemd service and sysconfig policy file.

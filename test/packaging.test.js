@@ -20,6 +20,8 @@ test("RPM versions follow package.json and its dependency lock", () => {
   assert.ok(wsVersion);
   assert.equal(version[1], packageInfo.version);
   assert.equal(wsVersion[1], lockInfo.packages["node_modules/ws"].version);
+  assert.match(spec, /^Provides:\s+1983-msx-unapi-relay\s+=/m);
+  assert.match(spec, /^Obsoletes:\s+1983-msx-unapi-relay\s+</m);
   assert.match(spec, /Provides:\s+bundled\(nodejs-ws\)/);
 });
 

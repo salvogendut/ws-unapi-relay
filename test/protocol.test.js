@@ -4,6 +4,11 @@ const assert = require("node:assert/strict");
 const { test } = require("node:test");
 const P = require("../src/protocol.js");
 
+test("protocol publishes current and legacy browser globals", () => {
+  assert.equal(globalThis.JSWsUnapiRelayProtocol, P);
+  assert.equal(globalThis.JS1983UnapiProtocol, P);
+});
+
 test("protocol frames preserve request, channel, and payload", () => {
   const payload = P.concat(new Uint8Array([7]), P.u16(2323), P.encodeText("host"));
   const decoded = P.decode(P.encode(P.Type.TCP_OPEN, 3, 0x1234, payload));
