@@ -120,6 +120,52 @@ Caddy handles the WebSocket upgrade automatically:
 }
 ```
 
+### LAN WSS for the hosted 1983 application
+
+An HTTPS page such as
+`https://salvogendut.github.io/chimeric/js1983/` cannot connect to a plain
+`ws://` relay. A Caddy instance on the relay host can provide WSS on the normal
+HTTPS port while the Node.js service remains private on loopback:
+
+```caddyfile
+https://192.168.68.223 {
+    tls internal
+    reverse_proxy 127.0.0.1:1983
+}
+```
+
+Set the relay's exact browser origin in
+`/etc/sysconfig/1983-msx-unapi-relay`:
+
+```ini
+UNAPI_RELAY_HOST=127.0.0.1
+UNAPI_ORIGINS=https://salvogendut.github.io
+```
+
+Restart both services after validating their configuration:
+
+```sh
+sudo systemctl restart 1983-msx-unapi-relay
+sudo systemctl reload caddy
+curl --insecure https://192.168.68.223/healthz
+```
+
+The `--insecure` option is appropriate only for this initial diagnostic. Copy
+Caddy's public root certificate from
+`/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt` to each
+browser machine and import it as a trusted certificate authority. Never copy
+the CA private key. The 1983 AUX panel's **Trust certificate** action opens the
+same health endpoint to make browser approval easier.
+
+Configure the browser application with:
+
+```text
+wss://192.168.68.223/unapi
+```
+
+Replace the example address with the relay host's stable LAN address. Only TCP
+443 needs to cross the host firewall; port 1983 should remain private.
+
 ## Safety checklist
 
 - Keep `UNAPI_RELAY_HOST=127.0.0.1` when a local reverse proxy is used.

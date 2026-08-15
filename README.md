@@ -38,6 +38,15 @@ http://127.0.0.1:8000/?extensions=unapi&unapiRelay=ws%3A%2F%2F127.0.0.1%3A1983%2
 Guest software still needs the `UNAPINET.COM` driver. Enabling the host
 extension alone does not install a guest TCP/IP UNAPI implementation.
 
+## Guides
+
+- [Deployment](docs/DEPLOYMENT.md) covers Fedora/systemd installation, WSS
+  reverse proxies, local certificates, and production safety.
+- [Using GB-proxy](docs/GB-PROXY.md) connects GEOBENCH through a GB-proxy
+  service running beside the relay.
+- [Protocol](docs/PROTOCOL.md) documents the versioned binary WebSocket
+  protocol.
+
 ## Configuration
 
 Run `1983-msx-unapi-relay --help` for command-line options and
@@ -74,8 +83,6 @@ a strong token, and only the destination ports actually required by the guest.
 A hardened systemd unit and an environment-file template live under
 `packaging/systemd`. See [Deployment](docs/DEPLOYMENT.md) for installation and
 reverse-proxy examples.
-
-The wire format is documented in [Protocol](docs/PROTOCOL.md).
 
 ### Fedora 42 RPM
 
