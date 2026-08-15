@@ -41,8 +41,9 @@ extension alone does not install a guest TCP/IP UNAPI implementation.
 
 - [Deployment](docs/DEPLOYMENT.md) covers Fedora/systemd installation, WSS
   reverse proxies, local certificates, and production safety.
-- [Using GB-proxy](docs/GB-PROXY.md) connects GEOBENCH through a GB-proxy
-  service running beside the relay.
+- [Using GB-proxy](docs/GB-PROXY.md) connects GEOBENCH and other compatible
+  guest browsers through GB-proxy, ws-unapi-relay, and Caddy running on one
+  machine.
 - [Protocol](docs/PROTOCOL.md) documents the versioned binary WebSocket
   protocol.
 
