@@ -50,7 +50,7 @@ install -d %{buildroot}%{_unitdir}
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 
 cp -a bin src node_modules package.json %{buildroot}%{_libexecdir}/%{name}/
-ln -s %{_libexecdir}/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/%{name}
+ln -s ../libexec/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/%{name}
 install -m 0644 packaging/systemd/%{name}.service \
   %{buildroot}%{_unitdir}/%{name}.service
 install -m 0600 packaging/systemd/%{name}.sysconfig \
