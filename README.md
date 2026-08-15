@@ -77,6 +77,31 @@ reverse-proxy examples.
 
 The wire format is documented in [Protocol](docs/PROTOCOL.md).
 
+### Fedora 42 RPM
+
+Build the noarch binary RPM and source RPM in a Fedora 42 environment:
+
+```sh
+sudo dnf install nodejs rpm-build systemd-rpm-macros openssl git curl
+packaging/rpm/build-rpm.sh
+sudo dnf install ./build/rpm/RPMS/noarch/1983-msx-unapi-relay-*.rpm
+```
+
+The service is installed disabled, following Fedora service policy. Configure
+`/etc/sysconfig/1983-msx-unapi-relay`, then manage it normally:
+
+```sh
+sudo systemctl enable --now 1983-msx-unapi-relay
+systemctl status 1983-msx-unapi-relay
+sudo systemctl restart 1983-msx-unapi-relay
+sudo systemctl stop 1983-msx-unapi-relay
+journalctl -u 1983-msx-unapi-relay
+```
+
+The RPM privately bundles the audited `ws` version pinned by `package-lock.json`
+and verifies its SHA-512 integrity while building. It otherwise depends only on
+Fedora's Node.js 20-or-newer runtime and systemd.
+
 ## Development
 
 ```sh

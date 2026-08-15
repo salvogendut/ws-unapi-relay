@@ -1,8 +1,49 @@
 # Deployment
 
+## Fedora 42 RPM
+
+The repository contains a Fedora-compatible spec file and a reproducible helper
+which creates both a noarch binary RPM and a source RPM:
+
+```sh
+sudo dnf install nodejs rpm-build systemd-rpm-macros openssl git curl
+packaging/rpm/build-rpm.sh
+sudo dnf install ./build/rpm/RPMS/noarch/1983-msx-unapi-relay-*.rpm
+```
+
+The helper creates packages under `build/rpm/`. It downloads the `ws` source
+archive pinned by `package-lock.json` and rejects it unless its SHA-512 digest
+matches the lockfile. The dependency is installed privately beneath
+`/usr/libexec/1983-msx-unapi-relay`; it does not modify the global npm tree.
+
+RPM installation provides:
+
+- `/usr/bin/1983-msx-unapi-relay`;
+- `/usr/lib/systemd/system/1983-msx-unapi-relay.service`;
+- `/etc/sysconfig/1983-msx-unapi-relay` as a mode-0600, configuration-preserving
+  file;
+- the application and private dependency under `/usr/libexec`;
+- protocol and deployment documentation.
+
+The service is intentionally not started automatically during package
+installation. Review the sysconfig file, then use the normal system service
+lifecycle:
+
+```sh
+sudo systemctl enable --now 1983-msx-unapi-relay
+systemctl status 1983-msx-unapi-relay
+sudo systemctl restart 1983-msx-unapi-relay
+sudo systemctl stop 1983-msx-unapi-relay
+journalctl -u 1983-msx-unapi-relay
+```
+
+After changing `/etc/sysconfig/1983-msx-unapi-relay`, restart the service. A
+`systemctl daemon-reload` is needed only when the unit itself changes.
+
 ## Install the Node.js service
 
-Install the application globally from a release checkout:
+The RPM above is preferred on Fedora. On other systemd distributions, install
+the application globally from a release checkout:
 
 ```sh
 npm ci
