@@ -1,0 +1,40 @@
+[Unit]
+Description=1983 MSX TCP/IP UNAPI relay
+Documentation=https://github.com/salvogendut/1983-msx-unapi-relay
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+EnvironmentFile=-/etc/sysconfig/1983-msx-unapi-relay
+ExecStart=/usr/bin/env 1983-msx-unapi-relay
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=15s
+UMask=0077
+
+AmbientCapabilities=
+CapabilityBoundingSet=
+LockPersonality=yes
+NoNewPrivileges=yes
+ProcSubset=pid
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

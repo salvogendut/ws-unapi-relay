@@ -1,0 +1,73 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Node.js ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22, 24]
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Check and test
+        run: npm run test:all
+
+      - name: Verify package contents
+        run: npm pack --dry-run
+
+  fedora-rpm:
+    name: Fedora 42 RPM
+    runs-on: ubuntu-latest
+    container: fedora:42
+
+    steps:
+      - name: Install RPM build tools
+        run: >-
+          dnf --assumeyes install
+          curl findutils git nodejs openssl rpm-build systemd systemd-rpm-macros
+
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Trust the container-mounted checkout
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Build source and binary RPMs
+        run: packaging/rpm/build-rpm.sh
+
+      - name: Install and validate the RPM
+        run: |
+          dnf --assumeyes install build/rpm/RPMS/noarch/*.rpm
+          rpm --query --list 1983-msx-unapi-relay
+          systemd-analyze verify /usr/lib/systemd/system/1983-msx-unapi-relay.service
+          1983-msx-unapi-relay --check-config
+
+      - name: Upload Fedora 42 packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: 1983-msx-unapi-relay-fedora-42
+          path: |
+            build/rpm/RPMS/noarch/*.rpm
+            build/rpm/SRPMS/*.rpm
+          if-no-files-found: error
