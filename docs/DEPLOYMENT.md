@@ -120,6 +120,10 @@ emulator.example.org {
 }
 ```
 
+For a same-host deployment that also routes GEOBENCH or another compatible
+guest browser through GB-proxy, see [Running ws-unapi-relay and GB-proxy on one
+machine](GB-PROXY.md).
+
 ### LAN WSS for the hosted emulator
 
 An HTTPS page such as
