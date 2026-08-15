@@ -2,6 +2,7 @@
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
   root.JSWsUnapiRelayProtocol = api;
+  root.JS1983UnapiProtocol = api;
 }(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 

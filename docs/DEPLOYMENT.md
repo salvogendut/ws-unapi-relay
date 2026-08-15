@@ -123,7 +123,7 @@ emulator.example.org {
 ### LAN WSS for the hosted emulator
 
 An HTTPS page such as
-`https://salvogendut.github.io/chimeric/emulator/` cannot connect to a plain
+`https://salvogendut.github.io/chimeric/js1983/` cannot connect to a plain
 `ws://` relay. A Caddy instance on the relay host can provide WSS on the normal
 HTTPS port while the Node.js service remains private on loopback:
 
