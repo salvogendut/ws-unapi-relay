@@ -5,7 +5,7 @@ const path = require("node:path");
 const { spawn, spawnSync } = require("node:child_process");
 const { test } = require("node:test");
 
-const executable = path.resolve(__dirname, "..", "bin", "1983-msx-unapi-relay.js");
+const executable = path.resolve(__dirname, "..", "bin", "ws-unapi-relay.js");
 
 function cleanEnvironment(overrides = {}) {
   const environment = { PATH: process.env.PATH };

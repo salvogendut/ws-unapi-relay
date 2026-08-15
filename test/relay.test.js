@@ -146,7 +146,7 @@ test("standalone server publishes health but never static files", async () => {
   let response = await request("/healthz");
   assert.equal(response.status, 200);
   const health = JSON.parse(response.body);
-  assert.equal(health.service, "1983-msx-unapi-relay");
+  assert.equal(health.service, "ws-unapi-relay");
   assert.equal(health.status, "ok");
   assert.equal(health.clients, 0);
   assert.equal(typeof health.uptimeSeconds, "number");
@@ -215,17 +215,17 @@ test("relay enforces an optional shared token", async () => {
   const protectedRelay = createRelayServer({
     host: "127.0.0.1",
     port: 0,
-    origins: ["https://1983.example"],
+    origins: ["https://emulator.example"],
     token: "correct horse battery staple",
   });
   const address = await protectedRelay.listen();
   try {
     await assert.rejects(
-      connectRelay("https://1983.example", "/unapi?token=wrong", address),
+      connectRelay("https://emulator.example", "/unapi?token=wrong", address),
       /403/
     );
     const socket = await connectRelay(
-      "https://1983.example",
+      "https://emulator.example",
       "/unapi?token=correct%20horse%20battery%20staple",
       address
     );

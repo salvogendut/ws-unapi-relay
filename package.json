@@ -1,19 +1,19 @@
 {
-  "name": "1983-msx-unapi-relay",
+  "name": "ws-unapi-relay",
   "version": "0.1.0",
-  "description": "Restricted WebSocket relay for MSX TCP/IP UNAPI clients",
+  "description": "Restricted WebSocket relay for TCP/IP UNAPI clients",
   "license": "GPL-2.0-only",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/salvogendut/1983-msx-unapi-relay.git"
+    "url": "git+https://github.com/salvogendut/ws-unapi-relay.git"
   },
   "bugs": {
-    "url": "https://github.com/salvogendut/1983-msx-unapi-relay/issues"
+    "url": "https://github.com/salvogendut/ws-unapi-relay/issues"
   },
-  "homepage": "https://github.com/salvogendut/1983-msx-unapi-relay#readme",
+  "homepage": "https://github.com/salvogendut/ws-unapi-relay#readme",
   "main": "src/relay.js",
   "bin": {
-    "1983-msx-unapi-relay": "bin/1983-msx-unapi-relay.js"
+    "ws-unapi-relay": "bin/ws-unapi-relay.js"
   },
   "files": [
     "bin/",
@@ -24,8 +24,8 @@
     "README.md"
   ],
   "scripts": {
-    "check": "node --check src/config.js && node --check src/protocol.js && node --check src/relay.js && node --check bin/1983-msx-unapi-relay.js",
-    "start": "node bin/1983-msx-unapi-relay.js",
+    "check": "node --check src/config.js && node --check src/protocol.js && node --check src/relay.js && node --check bin/ws-unapi-relay.js",
+    "start": "node bin/ws-unapi-relay.js",
     "test": "node --test test/*.test.js",
     "test:all": "npm run check && npm test"
   },

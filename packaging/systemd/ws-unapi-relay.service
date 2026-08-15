@@ -1,14 +1,14 @@
 [Unit]
-Description=1983 MSX TCP/IP UNAPI relay
-Documentation=https://github.com/salvogendut/1983-msx-unapi-relay
+Description=WebSocket TCP/IP UNAPI relay
+Documentation=https://github.com/salvogendut/ws-unapi-relay
 Wants=network-online.target
 After=network-online.target
 
 [Service]
 Type=simple
 DynamicUser=yes
-EnvironmentFile=-/etc/sysconfig/1983-msx-unapi-relay
-ExecStart=/usr/bin/env 1983-msx-unapi-relay
+EnvironmentFile=-/etc/sysconfig/ws-unapi-relay
+ExecStart=/usr/bin/env ws-unapi-relay
 Restart=on-failure
 RestartSec=2s
 TimeoutStopSec=15s

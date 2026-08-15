@@ -92,7 +92,7 @@ function loadConfig(overrides = {}, env = process.env) {
 
   return {
     host,
-    port: parseInteger(get("port", "UNAPI_RELAY_PORT", 1983),
+    port: parseInteger(get("port", "UNAPI_RELAY_PORT", 9380),
                        "UNAPI_RELAY_PORT", { min: 0, max: 65535 }),
     path,
     origins: parseOrigins(get("origins", "UNAPI_ORIGINS", undefined)),

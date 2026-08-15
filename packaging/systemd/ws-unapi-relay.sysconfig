@@ -1,11 +1,11 @@
 # The standalone relay listens only on loopback by default. A reverse proxy can
 # publish /unapi over WSS without exposing this port directly.
 UNAPI_RELAY_HOST=127.0.0.1
-UNAPI_RELAY_PORT=1983
+UNAPI_RELAY_PORT=9380
 UNAPI_RELAY_PATH=/unapi
 
-# Set the exact public origin(s) of the 1983 browser application.
-# UNAPI_ORIGINS=https://1983.example.org
+# Set the exact public origin(s) of the emulator browser application.
+# UNAPI_ORIGINS=https://emulator.example.org
 
 # For public deployments, add a random secret and keep this file mode 0600.
 # UNAPI_TOKEN=replace-with-a-long-random-value

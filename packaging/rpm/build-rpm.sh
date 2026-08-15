@@ -3,7 +3,7 @@ set -euo pipefail
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 project_dir=$(cd -- "$script_dir/../.." && pwd)
-package_name=1983-msx-unapi-relay
+package_name=ws-unapi-relay
 version=$(node -p "require('$project_dir/package.json').version")
 ws_version=$(node -p "require('$project_dir/package-lock.json').packages['node_modules/ws'].version")
 ws_integrity=$(node -p "require('$project_dir/package-lock.json').packages['node_modules/ws'].integrity")

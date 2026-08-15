@@ -1,12 +1,12 @@
 %global ws_version 8.21.3
 
-Name:           1983-msx-unapi-relay
+Name:           ws-unapi-relay
 Version:        0.1.0
 Release:        1%{?dist}
-Summary:        Restricted WebSocket relay for MSX TCP/IP UNAPI clients
+Summary:        Restricted WebSocket relay for TCP/IP UNAPI clients
 
 License:        GPL-2.0-only AND MIT
-URL:            https://github.com/salvogendut/1983-msx-unapi-relay
+URL:            https://github.com/salvogendut/ws-unapi-relay
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        https://registry.npmjs.org/ws/-/ws-%{ws_version}.tgz
 
@@ -18,14 +18,14 @@ Provides:       bundled(nodejs-ws) = %{ws_version}
 %{?systemd_requires}
 
 %description
-1983 MSX UNAPI Relay is a restricted WebSocket-to-TCP/UDP relay for the
-WebAssembly edition of the 1983 MSX/MSX2 emulator. It provides DNS, outbound
-TCP, and outbound UDP to guest TCP/IP UNAPI software while enforcing browser
-origin checks, destination address and port policy, resource limits, optional
-token authentication, and idle timeouts.
+WebSocket UNAPI Relay is a restricted WebSocket-to-TCP/UDP relay for
+browser-hosted emulators. It provides DNS, outbound TCP, and outbound UDP to
+guest TCP/IP UNAPI software while enforcing browser origin checks, destination
+address and port policy, resource limits, optional token authentication, and
+idle timeouts.
 
 The package installs a hardened systemd service which listens on loopback by
-default and is configured through /etc/sysconfig/1983-msx-unapi-relay.
+default and is configured through /etc/sysconfig/ws-unapi-relay.
 
 %prep
 %autosetup
@@ -39,9 +39,9 @@ tar -xzf %{SOURCE1} --strip-components=1 -C node_modules/ws
 node --check src/config.js
 node --check src/protocol.js
 node --check src/relay.js
-node --check bin/1983-msx-unapi-relay.js
+node --check bin/ws-unapi-relay.js
 node --test test/*.test.js
-systemd-analyze verify packaging/systemd/1983-msx-unapi-relay.service
+systemd-analyze verify packaging/systemd/ws-unapi-relay.service
 
 %install
 install -d %{buildroot}%{_bindir}
@@ -87,6 +87,6 @@ install -m 0600 packaging/systemd/%{name}.sysconfig \
 
 %changelog
 * Sat Aug 15 2026 Salvatore Bognanni <salvogendut@gmail.com> - 0.1.0-1
-- Package the standalone DNS, TCP, and UDP MSX UNAPI relay.
+- Package the standalone DNS, TCP, and UDP UNAPI relay.
 - Add a hardened systemd service and sysconfig policy file.
 - Bundle the audited ws 8.21.3 dependency for Fedora 42 compatibility.

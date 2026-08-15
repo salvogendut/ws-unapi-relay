@@ -8,9 +8,9 @@ const { test } = require("node:test");
 const root = path.resolve(__dirname, "..");
 const packageInfo = require("../package.json");
 const lockInfo = require("../package-lock.json");
-const spec = fs.readFileSync(path.join(root, "1983-msx-unapi-relay.spec"), "utf8");
+const spec = fs.readFileSync(path.join(root, "ws-unapi-relay.spec"), "utf8");
 const unit = fs.readFileSync(
-  path.join(root, "packaging/systemd/1983-msx-unapi-relay.service"), "utf8"
+  path.join(root, "packaging/systemd/ws-unapi-relay.service"), "utf8"
 );
 
 test("RPM versions follow package.json and its dependency lock", () => {
@@ -30,6 +30,6 @@ test("RPM owns a complete systemd lifecycle", () => {
   assert.match(spec, /%config\(noreplace\).*_sysconfdir.*\/sysconfig\//);
   assert.match(unit, /^DynamicUser=yes$/m);
   assert.match(unit, /^EnvironmentFile=-\/etc\/sysconfig\//m);
-  assert.match(unit, /^ExecStart=\/usr\/bin\/env 1983-msx-unapi-relay$/m);
+  assert.match(unit, /^ExecStart=\/usr\/bin\/env ws-unapi-relay$/m);
   assert.match(unit, /^WantedBy=multi-user\.target$/m);
 });

@@ -6,7 +6,7 @@ HTTP service. When GB-proxy and this relay run on the same machine, the complete
 path is:
 
 ```text
-GEOBENCH -> UNAPINET.COM -> 1983 WASM -> WSS relay
+GEOBENCH -> UNAPINET.COM -> emulator WASM -> WSS relay
          -> http://127.0.0.1:5001 -> GB-proxy -> Internet
 ```
 
@@ -25,9 +25,9 @@ Then enable and verify both services:
 
 ```sh
 sudo systemctl enable --now gb-proxy
-sudo systemctl restart 1983-msx-unapi-relay
+sudo systemctl restart ws-unapi-relay
 ss -ltn 'sport = :5001'
-curl --fail http://127.0.0.1:1983/healthz
+curl --fail http://127.0.0.1:9380/healthz
 ```
 
 Port 5001 does not need a firewall exception in this arrangement.
@@ -36,7 +36,7 @@ Port 5001 does not need a firewall exception in this arrangement.
 
 The relay intentionally denies private addresses and TCP port 5001 by default.
 Add port 5001 and explicitly permit private destinations in
-`/etc/sysconfig/1983-msx-unapi-relay`:
+`/etc/sysconfig/ws-unapi-relay`:
 
 ```ini
 UNAPI_TCP_PORTS=23,70,80,443,2323,5001
@@ -48,18 +48,18 @@ from other machines, also configure an exact `UNAPI_ORIGINS` value and a strong
 `UNAPI_TOKEN`. Enabling private destinations broadens the relay's reach, so do
 not use this setting on an unrestricted public relay.
 
-## Configure 1983 and GEOBENCH
+## Configure the emulator and GEOBENCH
 
 The two endpoints are deliberately different:
 
 ```text
-1983 AUX relay endpoint:  wss://192.168.68.223/unapi
+Emulator AUX relay endpoint:  wss://192.168.68.223/unapi
 GEOBENCH HTTP proxy:      http://127.0.0.1:5001
 ```
 
 The loopback address in GEOBENCH refers to the relay host, because the relay is
 the component that creates the TCP connection. It does not refer to the browser
-or emulated MSX. GB-proxy also advertises that loopback URL in rewritten links,
+or the emulated guest. GB-proxy also advertises that loopback URL in rewritten links,
 so subsequent page and image requests follow the same path.
 
 After saving the GEOBENCH proxy setting, open a page through the browser. A

@@ -10,7 +10,7 @@ const {
   parseBoolean,
   parsePortSet,
 } = require("../src/config.js");
-const { parseArguments, publicConfig } = require("../bin/1983-msx-unapi-relay.js");
+const { parseArguments, publicConfig } = require("../bin/ws-unapi-relay.js");
 
 const temporaryDirectories = [];
 
@@ -22,7 +22,7 @@ after(() => {
 test("configuration has conservative standalone defaults", () => {
   const config = loadConfig({}, {});
   assert.equal(config.host, "127.0.0.1");
-  assert.equal(config.port, 1983);
+  assert.equal(config.port, 9380);
   assert.equal(config.path, "/unapi");
   assert.equal(config.allowPrivate, false);
   assert.equal(config.allowMissingOrigin, false);
@@ -34,7 +34,7 @@ test("environment settings are parsed and validated", () => {
   const config = loadConfig({}, {
     UNAPI_RELAY_HOST: "0.0.0.0",
     UNAPI_RELAY_PORT: "8083",
-    UNAPI_ORIGINS: "https://1983.example/, https://msx.example",
+    UNAPI_ORIGINS: "https://emulator.example/, https://client.example",
     UNAPI_ALLOW_PRIVATE: "yes",
     UNAPI_TCP_PORTS: "70,80",
     UNAPI_UDP_PORTS: "",
@@ -42,8 +42,8 @@ test("environment settings are parsed and validated", () => {
   assert.equal(config.host, "0.0.0.0");
   assert.equal(config.port, 8083);
   assert.deepEqual([...config.origins], [
-    "https://1983.example",
-    "https://msx.example",
+    "https://emulator.example",
+    "https://client.example",
   ]);
   assert.equal(config.allowPrivate, true);
   assert.deepEqual([...config.tcpPorts], [70, 80]);
@@ -51,7 +51,7 @@ test("environment settings are parsed and validated", () => {
 });
 
 test("token files avoid exposing secrets in service command lines", () => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "1983-relay-test-"));
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "ws-relay-test-"));
   temporaryDirectories.push(directory);
   const filename = path.join(directory, "token");
   fs.writeFileSync(filename, "secret-token\n", { mode: 0o600 });
@@ -69,7 +69,7 @@ test("invalid settings fail before the listener starts", () => {
                 /UNAPI_RELAY_HOST/);
   assert.throws(() => loadConfig({}, { UNAPI_RELAY_PATH: "relative" }),
                 /absolute URL path/);
-  assert.throws(() => loadConfig({}, { UNAPI_ORIGINS: "file:///tmp/1983" }),
+  assert.throws(() => loadConfig({}, { UNAPI_ORIGINS: "file:///tmp/emulator" }),
                 /UNAPI_ORIGINS/);
   assert.throws(() => loadConfig({}, {
     UNAPI_TOKEN: "one",
@@ -83,7 +83,7 @@ test("command line options override environment-backed configuration", () => {
   const parsed = parseArguments([
     "--host", "0.0.0.0",
     "--port", "8083",
-    "--origins", "https://1983.example",
+    "--origins", "https://emulator.example",
     "--allow-private",
     "--check-config",
   ]);
@@ -91,6 +91,6 @@ test("command line options override environment-backed configuration", () => {
   const config = loadConfig(parsed.options, { UNAPI_RELAY_PORT: "9999" });
   assert.equal(config.port, 8083);
   assert.equal(config.allowPrivate, true);
-  assert.deepEqual([...config.origins], ["https://1983.example"]);
+  assert.deepEqual([...config.origins], ["https://emulator.example"]);
   assert.throws(() => parseArguments(["--unknown"]), /unknown option/);
 });

@@ -16,13 +16,13 @@ const VALUE_OPTIONS = new Map([
 ]);
 
 function usage() {
-  return `1983-msx-unapi-relay ${packageInfo.version}
+  return `ws-unapi-relay ${packageInfo.version}
 
-Usage: 1983-msx-unapi-relay [options]
+Usage: ws-unapi-relay [options]
 
 Options:
   --host ADDRESS           Listen address (default: 127.0.0.1)
-  --port PORT              Listen port (default: 1983)
+  --port PORT              Listen port (default: 9380)
   --path PATH              WebSocket path (default: /unapi)
   --origins LIST           Comma-separated browser origins
   --token-file FILE        Read the shared token from FILE
@@ -110,14 +110,14 @@ async function main(argv = process.argv.slice(2)) {
   const printableAddress = address.family === "IPv6"
     ? `[${address.address}]` : address.address;
   process.stdout.write(
-    `1983 MSX UNAPI relay ${packageInfo.version} listening on ` +
+    `WebSocket UNAPI relay ${packageInfo.version} listening on ` +
     `ws://${printableAddress}:${address.port}${relay.config.path}\n`
   );
 }
 
 if (require.main === module) {
   main().catch(error => {
-    process.stderr.write(`1983-msx-unapi-relay: ${error.message}\n`);
+    process.stderr.write(`ws-unapi-relay: ${error.message}\n`);
     process.exitCode = 1;
   });
 }

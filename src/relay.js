@@ -85,7 +85,7 @@ function createRelayServer(options = {}) {
   function handleHttp(request, response) {
     let url;
     try {
-      url = new URL(request.url, "http://1983.invalid");
+      url = new URL(request.url, "http://relay.invalid");
     } catch (_) {
       response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
       response.end("Bad request\n");
@@ -94,7 +94,7 @@ function createRelayServer(options = {}) {
     if (url.pathname === "/healthz" &&
         (request.method === "GET" || request.method === "HEAD")) {
       const body = JSON.stringify({
-        service: "1983-msx-unapi-relay",
+        service: "ws-unapi-relay",
         status: "ok",
         clients: wss.clients.size,
         uptimeSeconds: Math.floor((Date.now() - startedAt) / 1000),

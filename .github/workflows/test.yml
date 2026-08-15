@@ -59,14 +59,14 @@ jobs:
       - name: Install and validate the RPM
         run: |
           dnf --assumeyes install build/rpm/RPMS/noarch/*.rpm
-          rpm --query --list 1983-msx-unapi-relay
-          systemd-analyze verify /usr/lib/systemd/system/1983-msx-unapi-relay.service
-          1983-msx-unapi-relay --check-config
+          rpm --query --list ws-unapi-relay
+          systemd-analyze verify /usr/lib/systemd/system/ws-unapi-relay.service
+          ws-unapi-relay --check-config
 
       - name: Upload Fedora 42 packages
         uses: actions/upload-artifact@v7
         with:
-          name: 1983-msx-unapi-relay-fedora-42
+          name: ws-unapi-relay-fedora-42
           path: |
             build/rpm/RPMS/noarch/*.rpm
             build/rpm/SRPMS/*.rpm
