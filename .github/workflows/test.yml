@@ -50,6 +50,9 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v6
 
+      - name: Trust the container-mounted checkout
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Build source and binary RPMs
         run: packaging/rpm/build-rpm.sh
 
